@@ -1,14 +1,17 @@
 const getPaymentSlip = (line) => {
+  const barcode = getBarcode(line)
+  
+  validateDigit(line, barcode)
   return {
-    barcode: getBarcode(line),
+    barcode,
     value: calculateValue(line),
     expirationDate: calculateExpirationDate(line),
   };
 };
 
 function getBarcode(line) {
-  if (line.length < 47 || line.length > 48)
-    throw Error("A linha digitável não confere!");
+  // if (line.length < 47 || line.length > 48)
+  //   throw Error("A linha digitável não confere!");
 
   return (
     line.substr(0, 4) +
@@ -53,9 +56,39 @@ function calculateExpirationDate(line) {
   );
 }
 
-function validateDigitVerifierModule10(number) {
-  number = number.replace(/[^0-9]/g, "");
-  console.log("number", number);
+function fator_vencimento (dias) {
+  //Fator contado a partir da data base 07/10/1997
+  //*** Ex: 31/12/2011 fator igual a = 5198
+  //alert(dias);
+  var currentDate, t, d, mes;
+  t = new Date();
+  currentDate = new Date();
+  currentDate.setFullYear(1997,9,7);//alert(currentDate.toLocaleString());
+  t.setTime(currentDate.getTime() + (1000 * 60 * 60 * 24 * dias));//alert(t.toLocaleString());
+  mes = (currentDate.getMonth()+1); if (mes < 10) mes = "0" + mes;
+  dia = (currentDate.getDate()+1); if (dia < 10) dia = "0" + dia;
+  //campo.value = dia +"."+mes+"."+currentDate.getFullYear();campo.select();campo.focus();
+  return(t.toLocaleString());
+}
+
+function validateDigit(line, barcode) {
+  const field1 = module10(line.substr(0, 9))
+  const field1Digit = line.substr(9, 1)
+  const field2 = module10(line.substr(10, 10))
+  const field2Digit = line.substr(20, 1)
+  const field3 = module10(line.substr(21, 10))
+  const field3Digit = line.substr(31, 1)
+
+  const field4 = module11(barcode.substr(0, 4) + barcode.substr(5, 39))
+  const field4Digit = line.substr(32, 1)
+
+  if(field1 != field1Digit) throw Error(`Digito verificador ${field1Digit} está incorreto. O correto é ${field1}`);
+  if(field2 != field2Digit) throw Error(`Digito verificador ${field2Digit} está incorreto. O correto é ${field2}`);
+  if(field3 != field3Digit) throw Error(`Digito verificador ${field3Digit} está incorreto. O correto é ${field3}`);
+  if(field4 != field4Digit) throw Error(`Digito verificador ${field4Digit} está incorreto. O correto é ${field4}`);
+}
+
+function module10(number) {
   let soma = 0;
   let peso = 2;
   let contador = number.length - 1;
@@ -78,7 +111,7 @@ function validateDigitVerifierModule10(number) {
   return digito;
 }
 
-function validateDigitVerifierModule11(number) {
+function module11(number) {
   let soma = 0;
   let peso = 2;
   let base = 9;
