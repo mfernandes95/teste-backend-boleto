@@ -43,32 +43,21 @@ function calculateValue(line) {
 }
 
 function calculateExpirationDate(line) {
-  const vencimento = line.slice(line.length - 14, line.length - 10);
-  let date = new Date("10/07/1997");
+  const days = line.slice(line.length - 14, line.length - 10);
 
-  date.setTime(date.getTime() + vencimento * 24 * 60 * 60 * 1000);
-  return (
-    date.getFullYear() +
-    "/" +
-    ("0" + (date.getMonth() + 1)).slice(-2) +
-    "/" +
-    ("0" + (date.getDate() + 1)).slice(-2)
-  );
-}
+  if(days == '0000') return
 
-function fator_vencimento (dias) {
-  //Fator contado a partir da data base 07/10/1997
-  //*** Ex: 31/12/2011 fator igual a = 5198
-  //alert(dias);
-  var currentDate, t, d, mes;
+  let currentDate, t, month, day;
   t = new Date();
   currentDate = new Date();
-  currentDate.setFullYear(1997,9,7);//alert(currentDate.toLocaleString());
-  t.setTime(currentDate.getTime() + (1000 * 60 * 60 * 24 * dias));//alert(t.toLocaleString());
-  mes = (currentDate.getMonth()+1); if (mes < 10) mes = "0" + mes;
-  dia = (currentDate.getDate()+1); if (dia < 10) dia = "0" + dia;
-  //campo.value = dia +"."+mes+"."+currentDate.getFullYear();campo.select();campo.focus();
-  return(t.toLocaleString());
+  currentDate.setFullYear(1997,9,7);
+  t.setTime(currentDate.getTime() + (1000 * 60 * 60 * 24 * days));
+  month = (currentDate.getMonth()+1);
+  if (month < 10) month = "0" + month;
+  day = (currentDate.getDate()+1);
+  if (day < 10) day = "0" + day;
+
+  return(t.toLocaleDateString('fr-CA'));
 }
 
 function validateDigit(line, barcode) {
