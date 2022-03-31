@@ -22,8 +22,6 @@ http://localhost:3000/boleto/21290001192110001210904475617405975870000002000
 
 ## Run Tests
 
-##### NOT STABLE
-
 ```bash
 npm run test
 ```
