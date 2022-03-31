@@ -2,7 +2,7 @@ const routes = require("express").Router();
 
 const PaymentSlipController = require("./app/controllers/PaymentSlipController");
 
-const requestTime = function (req, res, next) {
+const verifyOnlyNumbers = function (req, res, next) {
   if (!(/^\d+$/.test(req.params.line)))
     return res
       .status(400)
@@ -10,6 +10,6 @@ const requestTime = function (req, res, next) {
   next();
 };
 
-routes.get("/boleto/:line", requestTime, PaymentSlipController.getPaymentSlip);
+routes.get("/boleto/:line", verifyOnlyNumbers, PaymentSlipController.getPaymentSlip);
 
 module.exports = routes;

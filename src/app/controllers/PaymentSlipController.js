@@ -2,7 +2,7 @@ const PaymentSlipService = require('../services/PaymentSlipService');
 
 
 class PaymentSlipController {
-  async getPaymentSlip(req, res) {
+  getPaymentSlip(req, res) {
     try {
       res.status(200).send(PaymentSlipService(req.params.line));
     } catch (error) {
