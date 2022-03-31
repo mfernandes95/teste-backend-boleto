@@ -1,11 +1,11 @@
 const getPaymentSlip = (line) => {
-  if (line.length == 47) return titulo(line);
-  if (line.length == 48) return convenio(line);
+  if (line.length == 47) return paymentSlipTitulo(line);
+  if (line.length == 48) return paymentSlipConvenio(line);
 
   throw new Error('A linha está incorreta!');
 };
 
-function titulo(line) {
+function paymentSlipTitulo(line) {
   const barcode = getBarcode(line);
 
   validateDigit(line, barcode);
@@ -16,7 +16,7 @@ function titulo(line) {
   };
 }
 
-function convenio(line) {
+function paymentSlipConvenio(line) {
   const barcode = getBarcodeConvenio(line);
   validateDigitConvenio(line, barcode);
 

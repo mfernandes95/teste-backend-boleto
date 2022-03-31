@@ -9,7 +9,7 @@ describe('Payment Slip', () => {
     });
   });
 
-  it('should return payment slip titulo data', () => {
+  it('should return payment slip titulo data convenio', () => {
     expect(PaymentSlipService('846700000017435900240209024050002435842210108119')).toStrictEqual({
       barcode: '84670000001435900240200240500024384221010811',
     });
